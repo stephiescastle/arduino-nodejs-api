@@ -1,3 +1,6 @@
+// manually update a pin
+// used for testing
+
 require("dotenv").config();
 const fetch = require("node-fetch");
 

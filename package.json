@@ -1,0 +1,17 @@
+{
+  "name": "arduino-web-api",
+  "version": "1.0.0",
+  "description": "simple web api for arduino",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "johnny-five": "^2.0.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Stephanie Cheng Smith",
+  "license": "ISC"
+}

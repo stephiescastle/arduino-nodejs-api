@@ -33,3 +33,15 @@ This was developed to help facilitate the creation of interactive, physical comp
 ```node
 node index.js
 ```
+
+### Test changing a value
+
+If you don't have hardware to connect to your arduino, you can manually update pin values via the `update.js` script. Modify the code to update the pin and value desired, then run it:
+
+```
+node update.js
+```
+
+In this case, `update` would update pin `A0` to `1200`.
+
+This is useful as a quick test to make sure the API and arduino are talking to each other.

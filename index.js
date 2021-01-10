@@ -37,12 +37,12 @@ var requestLoop = setInterval(function () {
 
 // arduino code
 board.on("ready", () => {
-  // init pins at -1 to kick-off listeners when data received
+  // init pins at -1 to kick-off listeners functions when data received
   pinA0.value = -1;
 
   var led = new five.Led(13);
 
-  // listen for changed in fetched data
+  // listen for changes in fetched data
   pinA0.registerListener(function (val) {
     console.log("update blink rate");
     led.blink(pinA0.value);

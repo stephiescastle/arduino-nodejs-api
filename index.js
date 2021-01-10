@@ -1,3 +1,4 @@
+// simple example demonstrating a blinking LED based on fetched data
 require("dotenv").config();
 const fetch = require("node-fetch");
 const five = require("johnny-five");
@@ -7,8 +8,7 @@ const board = new five.Board({
   repl: false,
 });
 
-var pins = ["A0", "A1", "A2"];
-
+// init pinA0
 pinA0 = {
   valueInternal: 0,
   valueListener: function (val) {},
@@ -26,6 +26,7 @@ pinA0 = {
   },
 };
 
+// fetch data every 500ms
 var requestLoop = setInterval(function () {
   fetch(`${process.env.API_HOST}/analog/A0`)
     .then((res) => res.json())
@@ -34,12 +35,14 @@ var requestLoop = setInterval(function () {
     .catch((err) => console.log(err));
 }, 500);
 
+// arduino code
 board.on("ready", () => {
-  // init pins at 0 when board is ready to kick-off listeners
-  pinA0.value = 0;
+  // init pins at -1 to kick-off listeners when data received
+  pinA0.value = -1;
 
   var led = new five.Led(13);
 
+  // listen for changed in fetched data
   pinA0.registerListener(function (val) {
     console.log("update blink rate");
     led.blink(pinA0.value);

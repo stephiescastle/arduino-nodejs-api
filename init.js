@@ -1,7 +1,8 @@
-// Not in use
+// Not in use / WIP
 // DB starts with all pins initialized.
 // the tricky part here was clearing everything and then adding everything sequentially
-// this is still preferred way and only having proto itemsin the hosted db but can't figure it out yet
+// this is still preferred way and only having proto items in the hosted db but can't figure it out yet
+// this would allow for flexibility in the number of pins used (i.e. could be used for an arduino Mega)
 require("dotenv").config();
 const fetch = require("node-fetch");
 
@@ -10,9 +11,10 @@ const fetch = require("node-fetch");
 //   value: 0,
 // };
 
-const pins = ["A0", "A1", "A2", "A3"];
+// add all analog pins on an Arduino Uno
+const pins = ["A0", "A1", "A2", "A3", "A4", "A5"];
 
-// clear out any old pins before init
+// clear out any old pins before init to avoid JSON errors (duplicate ID)
 function deletePins() {
   pins.forEach((pin) => {
     fetch(`${process.env.API_HOST}/analog/${pin}`, {
@@ -24,7 +26,7 @@ function deletePins() {
       .catch((err) => console.log(err));
   });
 }
-// create Pins
+// init pins
 function createPins() {
   pins.forEach((pin) => {
     const pinObject = {
@@ -44,6 +46,7 @@ function createPins() {
 
 function init() {
   deletePins();
+  // TODO: create after delete is complete
   createPins();
 }
 

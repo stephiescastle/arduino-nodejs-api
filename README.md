@@ -1,6 +1,6 @@
-# arduino-web-api
+# arduino-nodejs-api
 
-## Simple API to allow remote communication with an Arduino
+## Simple NodeJS API to allow remote communication with an Arduino
 
 This api will allow your arduino to send and receive data to a remote server. This means you can retrieve data from other arduinos and alternatively make your data available to others. Additionally, the endpoints for your arduino can be used as a data endpoint in other apps, i.e. p5.js, Max/MSP, etc.
 
@@ -16,7 +16,7 @@ This was developed to help facilitate the creation of interactive, physical comp
 ### Remote Server
 
 - The server is a separate repo that runs `json-server`
-- In practice, this server can be deployed to heroku for remote communication
+- In practice, this server can be deployed to heroku or similar for remote communication
 
 ### Local
 

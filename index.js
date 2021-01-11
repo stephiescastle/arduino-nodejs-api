@@ -61,7 +61,7 @@ board.on("ready", () => {
   });
 
   // Uncomment out this code block if you want to read from your pin directly
-  // read directly from my sensor to update blink value
+  // // read directly from my sensor to update blink value
   // sensor.on("change", function () {
   //   const scaledVal = this.scaleTo(0, 2000);
   //   led.blink(scaledVal);
@@ -69,6 +69,7 @@ board.on("ready", () => {
 
   // Comment out this code block if you are reading from you pinA0 directly
   // listen for changes in data fetched from the server
+  // TODO: write a scaling function that can be used with fetched data
   pinA0.registerListener(function (val) {
     console.log("update blink rate");
     led.blink(pinA0.value);

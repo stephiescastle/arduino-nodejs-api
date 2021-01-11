@@ -36,6 +36,10 @@ cp .env.dist .env
 npm start
 ```
 
+### Controlling the arduino
+
+Code for the arduino is located in `index.js` and uses the johnny-five library.
+
 ### Test changing a value
 
 If you don't have hardware connected to your arduino, you can manually update pin values via the `update.js` script. Modify the pin and value as needed in `update.js`, then run it:

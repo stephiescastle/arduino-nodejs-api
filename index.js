@@ -9,6 +9,7 @@ const board = new five.Board({
 });
 
 // init pinA0
+// TODO: find a way to generate this dynamically for all pins
 pinA0 = {
   valueInternal: 0,
   valueListener: function (val) {},

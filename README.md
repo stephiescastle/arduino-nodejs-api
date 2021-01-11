@@ -50,10 +50,18 @@ Code for the arduino is located in `index.js` and uses the johnny-five library.
 
 If you don't have hardware connected to your arduino, you can manually update pin values via the `update.js` script. Modify the pin and value as needed in `update.js`, then run it:
 
+```js
+// pin A0 as defined in update.js
+let pin = {
+  id: "A0",
+  value: 1200,
+};
+```
+
 ```bash
 node update
 ```
 
 In this case, `update` would update pin `A0` to `1200`.
 
-This is useful as a quick test to make the arduino can communicate with the server.
+This is useful as a quick test to make sure the arduino can communicate with the server.

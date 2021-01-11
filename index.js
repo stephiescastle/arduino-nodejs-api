@@ -32,7 +32,7 @@ var requestLoop = setInterval(function () {
   fetch(`${process.env.API_HOST}/analog/A0`)
     .then((res) => res.json())
     .then((json) => (pinA0.value = json.value))
-    .then(console.log(pinA0.value))
+    .then(console.log("fetched value: " + pinA0.value))
     .catch((err) => console.log(err));
 }, 500);
 
@@ -43,9 +43,50 @@ board.on("ready", () => {
 
   var led = new five.Led(13);
 
-  // listen for changes in fetched data
+  // set up my sensor on pin A0
+  const sensor = new five.Sensor({
+    pin: "A0",
+    freq: 50,
+    threshold: 10,
+    type: "analog",
+  });
+
+  // need to store the last read value of the sensor
+  // so we can send it to the server
+  let sensorVal = 0;
+
+  sensor.on("change", function () {
+    // update the sensor value when it changes
+    sensorVal = this.value;
+  });
+
+  // Uncomment out this code block if you want to read from your pin directly
+  // read directly from my sensor to update blink value
+  // sensor.on("change", function () {
+  //   const scaledVal = this.scaleTo(0, 2000);
+  //   led.blink(scaledVal);
+  // });
+
+  // Comment out this code block if you are reading from you pinA0 directly
+  // listen for changes in data fetched from the server
   pinA0.registerListener(function (val) {
     console.log("update blink rate");
     led.blink(pinA0.value);
   });
+
+  // regularly send values of my pins to the server
+  var sendLoop = setInterval(function () {
+    const localPinA0 = {
+      id: "A0",
+      value: sensorVal,
+    };
+    fetch(`${process.env.API_HOST}/analog/A0`, {
+      method: "PUT",
+      body: JSON.stringify(localPinA0),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((json) => console.log(json))
+      .catch((err) => console.log(err));
+  }, 500);
 });

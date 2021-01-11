@@ -30,7 +30,13 @@ cp .env.dist .env
 3. Update the resulting `.env` file with your `API_HOST`. This corresponds to the URL of your heroku server. Leave as is if you are testing locally.
 
 4. Connect your arduino to your computer (it should already be configured to work with johnny-five)
-5. Run arduino-nodejs-api locally
+5. Install dependencies
+
+```bash
+npm install
+```
+
+6. Run arduino-nodejs-api locally
 
 ```bash
 npm start
@@ -45,7 +51,7 @@ Code for the arduino is located in `index.js` and uses the johnny-five library.
 If you don't have hardware connected to your arduino, you can manually update pin values via the `update.js` script. Modify the pin and value as needed in `update.js`, then run it:
 
 ```bash
-node update.js
+node update
 ```
 
 In this case, `update` would update pin `A0` to `1200`.

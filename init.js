@@ -17,7 +17,7 @@ const pins = ["A0", "A1", "A2", "A3", "A4", "A5"];
 // clear out any old pins before init to avoid JSON errors (duplicate ID)
 function deletePins() {
   pins.forEach((pin) => {
-    fetch(`${process.env.API_HOST}/analog/${pin}`, {
+    fetch(`${process.env.API_HOST}/pins/${pin}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
@@ -33,7 +33,7 @@ function createPins() {
       id: pin,
       value: 0,
     };
-    fetch(`${process.env.API_HOST}/analog`, {
+    fetch(`${process.env.API_HOST}/pins`, {
       method: "POST",
       body: JSON.stringify(pinObject),
       headers: { "Content-Type": "application/json" },

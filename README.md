@@ -15,7 +15,7 @@ This was developed to help facilitate the creation of interactive, physical comp
 
 - [arduino-json-server](https://github.com/stephiescastle/arduino-json-server)
 - node.js
-- arduino must be configured to work with [johnny-five](http://johnny-five.io/platform-support/#arduino-uno)
+- arduino must be configured to work with [johnny-five](http://johnny-five.io/platform-support/#arduino-uno) (i.e. upload `StandardFirmataPlus` to the board)
 - arduino must be tethered via USB
 
 ### Getting Started

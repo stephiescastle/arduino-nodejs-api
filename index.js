@@ -29,7 +29,7 @@ pinA0 = {
 
 // fetch data every 500ms
 var requestLoop = setInterval(function () {
-  fetch(`${process.env.API_HOST}/analog/A0`)
+  fetch(`${process.env.API_HOST}/pins/A0`)
     .then((res) => res.json())
     .then((json) => (pinA0.value = json.value))
     .then(console.log("fetched value: " + pinA0.value))
@@ -81,7 +81,7 @@ board.on("ready", () => {
       id: "A0",
       value: sensorVal,
     };
-    fetch(`${process.env.API_HOST}/analog/A0`, {
+    fetch(`${process.env.API_HOST}/pins/A0`, {
       method: "PUT",
       body: JSON.stringify(localPinA0),
       headers: { "Content-Type": "application/json" },

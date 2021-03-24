@@ -4,6 +4,11 @@
 require("dotenv").config();
 const fetch = require("node-fetch");
 
+function getRandomNumber() {
+  const min = Math.ceil(0);
+  const max = Math.floor(1023);
+  return Math.floor(Math.random() * (max - min) + min);
+}
 // const pin = {
 //   id: "A0",
 //   value: 1200,
@@ -12,15 +17,15 @@ const fetch = require("node-fetch");
 const allPins = [
   {
     id: "A0",
-    value: 10,
+    value: getRandomNumber(),
   },
   {
     id: "A1",
-    value: 356,
+    value: getRandomNumber(),
   },
   {
     id: "A2",
-    value: 487,
+    value: getRandomNumber(),
   },
 ];
 

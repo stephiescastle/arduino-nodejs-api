@@ -4,10 +4,10 @@
 require("dotenv").config();
 const fetch = require("node-fetch");
 
-const pin = {
-  id: "A0",
-  value: 1200,
-};
+// const pin = {
+//   id: "A0",
+//   value: 1200,
+// };
 
 const allPins = [
   {
@@ -25,8 +25,6 @@ const allPins = [
 ];
 
 for (const pin of allPins) {
-  // const user = await fetch(`https://remote-server.com/user/${id}.json`);
-  // users.push(user);
   console.log(`${process.env.API_HOST}/pins/${pin.id}`);
   fetch(`${process.env.API_HOST}/pins/${pin.id}`, {
     method: "PUT",

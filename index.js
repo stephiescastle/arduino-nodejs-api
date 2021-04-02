@@ -1,93 +1,68 @@
-// simple example demonstrating a blinking LED based on fetched data
+// import dependencies
 require("dotenv").config();
 const fetch = require("node-fetch");
-const five = require("johnny-five");
+const SerialPort = require("serialport");
+const Readline = require("@serialport/parser-readline");
 
-// init board
-const board = new five.Board({
-  repl: false,
+// vars *️⃣ update to match your configuration
+const portName = "/dev/cu.SLAB_USBtoUART"; // the name of the serial port (same as arduino port)
+const baudRate = 9600; // should match the arduino's baudrate
+const interval = 500; // time interval for POST requests
+
+// an empty array to store pin data
+let pins = [];
+
+// setup the serial port
+const port = new SerialPort(portName, { baudRate: baudRate }, function (err) {
+  if (err) {
+    console.log("Error: ", err.message);
+  }
 });
 
-// init pinA0
-// TODO: find a way to generate this dynamically for all pins
-pinA0 = {
-  valueInternal: 0,
-  valueListener: function (val) {},
-  set value(val) {
-    if (this.valueInternal !== val) {
-      this.valueInternal = val;
-      this.valueListener(val);
+// setup a parser to read the serial port
+const parser = port.pipe(new Readline({ delimiter: "\n" })); // Read the port data
+
+// do stuff once the port is open
+port.on("open", () => {
+  console.log("✅ serial port open");
+
+  // parse data
+  parser.on("data", (data) => {
+    // remove any trailing whitespace and \n
+    data = data.trim();
+    // split at delimiter, convert to number, and assign to pins array
+    pins = data.split("\t").map(Number);
+  });
+
+  // send our data to the net
+  var sendData = setInterval(function () {
+    // create a new array based on parsed data
+    // *️⃣ add more pins to this array as needed. this should correspond with your arduino code
+    const allPins = [
+      {
+        id: "A0",
+        value: pins[0],
+      },
+      {
+        id: "A1",
+        value: pins[1],
+      },
+      {
+        id: "D2",
+        value: pins[2],
+      },
+    ];
+
+    // step through the array and update each pin online
+    for (const pin of allPins) {
+      fetch(`${process.env.API_HOST}/pins/${pin.id}`, {
+        method: "PUT",
+        body: JSON.stringify(pin),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((json) => console.log(json))
+        .catch((err) => console.log(err));
     }
-  },
-  get value() {
-    return this.valueInternal;
-  },
-  registerListener: function (listener) {
-    this.valueListener = listener;
-  },
-};
-
-// fetch data every 500ms
-var requestLoop = setInterval(function () {
-  fetch(`${process.env.API_HOST}/pins/A0`)
-    .then((res) => res.json())
-    .then((json) => (pinA0.value = json.value))
-    .then(console.log("fetched value: " + pinA0.value))
-    .catch((err) => console.log(err));
-}, 500);
-
-// arduino code
-board.on("ready", () => {
-  // init pins at -1 to kick-off listeners functions when data received
-  pinA0.value = -1;
-
-  var led = new five.Led(13);
-
-  // set up my sensor on pin A0
-  const sensor = new five.Sensor({
-    pin: "A0",
-    freq: 50,
-    threshold: 10,
-    type: "analog",
-  });
-
-  // need to store the last read value of the sensor
-  // so we can send it to the server
-  let sensorVal = 0;
-
-  sensor.on("change", function () {
-    // update the sensor value when it changes
-    sensorVal = this.value;
-  });
-
-  // Uncomment out this code block if you want to read from your pin directly
-  // // read directly from my sensor to update blink value
-  // sensor.on("change", function () {
-  //   const scaledVal = this.scaleTo(0, 2000);
-  //   led.blink(scaledVal);
-  // });
-
-  // Comment out this code block if you are reading from you pinA0 directly
-  // listen for changes in data fetched from the server
-  // TODO: write a scaling function that can be used with fetched data
-  pinA0.registerListener(function (val) {
-    console.log("update blink rate");
-    led.blink(pinA0.value);
-  });
-
-  // regularly send values of my pins to the server
-  var sendLoop = setInterval(function () {
-    const localPinA0 = {
-      id: "A0",
-      value: sensorVal,
-    };
-    fetch(`${process.env.API_HOST}/pins/A0`, {
-      method: "PUT",
-      body: JSON.stringify(localPinA0),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.log(err));
-  }, 500);
+  }, interval);
 });

@@ -15,7 +15,7 @@ This was developed to help facilitate the creation of interactive, physical comp
 
 - [arduino-json-server](https://github.com/stephiescastle/arduino-json-server)
 - node.js
-- arduino must be configured to work with [johnny-five](http://johnny-five.io/platform-support/#arduino-uno) (i.e. upload `StandardFirmataPlus` to the board)
+- arduino program must be printing to the serial port with a delimiter (see [/arduinoSerial/arduinoSerial.ino](/arduinoSerial/arduinoSerial.ino))
 - arduino must be tethered via USB
 
 ### Getting Started
@@ -27,41 +27,25 @@ This was developed to help facilitate the creation of interactive, physical comp
 cp .env.dist .env
 ```
 
-3. Update the resulting `.env` file with your `API_HOST`. This corresponds to the URL of your heroku server. Leave as is if you are testing locally.
+1. Update the `.env` file with your `API_HOST`. This corresponds to the URL of your heroku server or localhost.
 
-4. Connect your arduino to your computer (it should already be configured to work with johnny-five)
-5. Install dependencies
+2. Connect your arduino to your computer and upload the corresponding arduino program to it (you may need to modify this for the pins you are actually using)
+3. Install dependencies
 
 ```bash
 npm install
 ```
 
-6. Run arduino-nodejs-api locally
+1. Run arduino-nodejs-api
 
 ```bash
 npm start
 ```
 
-### Controlling the arduino
-
-Code for the arduino is located in `index.js` and uses the johnny-five library.
-
 ### Test changing a value
 
-If you don't have hardware connected to your arduino, you can manually update pin values via the `update.js` script. Modify the pin and value as needed in `update.js`, then run it:
-
-```js
-// pin A0 as defined in update.js
-let pin = {
-  id: "A0",
-  value: 1200,
-};
-```
+If you don't have your arduino connected, you can manually update pin values via the `test.js` script. This is useful if you just want to test your endpoints.
 
 ```bash
-node update
+node test
 ```
-
-In this case, `update` would update pin `A0` to `1200`.
-
-This is useful as a quick test to make sure the arduino can communicate with the server.

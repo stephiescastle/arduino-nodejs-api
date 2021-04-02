@@ -11,11 +11,16 @@ const interval = 500; // time interval for POST requests
 
 // an empty array to store pin data
 let pins = [];
+// container for our interval function
+let sendData;
 
 // setup the serial port
 const port = new SerialPort(portName, { baudRate: baudRate }, function (err) {
   if (err) {
-    console.log("Error: ", err.message);
+    console.log(
+      "❌ Cannot connect to serial port. Make sure your arduino is plugged in and check `portName`.",
+      err.message
+    );
   }
 });
 
@@ -35,7 +40,7 @@ port.on("open", () => {
   });
 
   // send our data to the net
-  var sendData = setInterval(function () {
+  sendData = setInterval(function () {
     // create a new array based on parsed data
     // *️⃣ add more pins to this array as needed. this should correspond with your arduino code
     const allPins = [
@@ -65,4 +70,10 @@ port.on("open", () => {
         .catch((err) => console.log(err));
     }
   }, interval);
+});
+
+port.on("close", () => {
+  console.log("❎ serial port closed");
+  // stop sending data
+  clearInterval(sendData);
 });

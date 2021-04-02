@@ -48,7 +48,7 @@ Code for the arduino is located in `index.js` and uses the johnny-five library.
 
 ### Test changing a value
 
-If you don't have hardware connected to your arduino, you can manually update pin values via the `update.js` script. Modify the pin and value as needed in `update.js`, then run it:
+If you don't have hardware connected to your arduino, you can manually update pin values via the `test.js` script. Modify the pin and value as needed in `test.js`, then run it:
 
 ```js
 // pin A0 as defined in update.js
@@ -59,9 +59,7 @@ let pin = {
 ```
 
 ```bash
-node update
+node test
 ```
 
-In this case, `update` would update pin `A0` to `1200`.
-
-This is useful as a quick test to make sure the arduino can communicate with the server.
+In this case, you should expect the value of `A0` to be updated to `1200`.

@@ -1,6 +1,6 @@
 # arduino-serial-fetch
 
-This app converts serial messages from an Arduino to REST API requests. It has been developed to correspond specifically with the REST API service provided by [arduino-api-server](https://github.com/soundasobject21/arduino-api-server) and is structured solely to update pin data.
+This app converts serial messages from an Arduino to REST API requests. It has been developed to correspond specifically with the REST API service provided by [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) and is structured solely to update pin data.
 
 - [Requirements](#requirements)
 - [Getting Started](#getting-started)
@@ -10,13 +10,13 @@ This app converts serial messages from an Arduino to REST API requests. It has b
 
 ## Requirements
 
-- [arduino-api-server](https://github.com/soundasobject21/arduino-api-server)
+- [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)
 - Arduino serial messages must following a specific format. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format)
 - Arduino must be tethered to your computer
 
 ## Getting Started
 
-1. First complete your [arduino-api-server](https://github.com/soundasobject21/arduino-api-server) setup
+1. First complete your [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) setup
 2. Download/clone this repo or [use it as a template](https://github.com/stephiescastle/arduino-serial-fetch/generate)
 3. Connect your Arduino to your computer and upload the corresponding Arduino program to it. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format).
 4. Create your env file.
@@ -29,7 +29,7 @@ This app converts serial messages from an Arduino to REST API requests. It has b
 
    | var          | default                   | description                                                                                                                                                                                                                   |
    | :----------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `API_HOST`   | `http://localhost:3000`   | The host URL of your API server (see [arduino-api-server](https://github.com/soundasobject21/arduino-api-server)). Note: if you are deploying with localtunnel, you should continue to use `localhost:3000` as your `API_HOST` |
+   | `API_HOST`   | `http://localhost:3000`   | The host URL of your API server (see [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)). Note: if you are deploying with localtunnel, you should continue to use `localhost:3000` as your `API_HOST` |
    | `SERIALPORT` | `/dev/tty.SLAB_USBtoUART` | The serial port your Arduino is connected to. Should match the port name you use in the Arduino IDE.                                                                                                                          |
    | `BAUDRATE`   | `9600`                    | Match the baudrate used in your Arduino code. Check `Serial.begin(9600);` in your Arduino `setup()`                                                                                                                           |
    | `INTERVAL`   | `500`                     | Frequency of API requests (in milliseconds)                                                                                                                                                                                   |

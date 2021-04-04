@@ -27,12 +27,12 @@ This app converts serial messages from an Arduino to REST API requests. It has b
 
 5. Update the `.env` file with values that match your configuration:
 
-   | var          | default                   | description                                                                                                      |
-   | :----------- | :------------------------ | :--------------------------------------------------------------------------------------------------------------- |
-   | `API_HOST`   | `http://localhost:3000`   | The host URL of your API server (see [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)) |
-   | `SERIALPORT` | `/dev/tty.SLAB_USBtoUART` | The serial port your Arduino is connected to. Should match the port name you use in the Arduino IDE.             |
-   | `BAUDRATE`   | `9600`                    | Match the baudrate used in your Arduino code. Check `Serial.begin(9600);` in your Arduino `setup()`              |
-   | `INTERVAL`   | `500`                     | Frequency of API requests (in milliseconds)                                                                      |
+   | var          | default                   | description                                                                                                                                                                                                                   |
+   | :----------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `API_HOST`   | `http://localhost:3000`   | The host URL of your API server (see [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)). Note: if you are deploying with a local tunnel, you can continue to use `localhost:3000` as your `API_HOST` |
+   | `SERIALPORT` | `/dev/tty.SLAB_USBtoUART` | The serial port your Arduino is connected to. Should match the port name you use in the Arduino IDE.                                                                                                                          |
+   | `BAUDRATE`   | `9600`                    | Match the baudrate used in your Arduino code. Check `Serial.begin(9600);` in your Arduino `setup()`                                                                                                                           |
+   | `INTERVAL`   | `500`                     | Frequency of API requests (in milliseconds)                                                                                                                                                                                   |
 
 6. Install dependencies
 

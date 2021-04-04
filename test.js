@@ -12,10 +12,13 @@ const fetch = require("node-fetch");
 const interval = +process.env.INTERVAL; // time interval for API requests
 
 // random number generator
-function getRandomNumber() {
+function getRandomNumberAnalog() {
   const min = Math.ceil(0);
-  const max = Math.floor(255);
+  const max = Math.floor(1023);
   return Math.floor(Math.random() * (max - min) + min);
+}
+function getRandomNumberDigital() {
+  return Math.floor(Math.random() * 2);
 }
 
 // convert data to API requests at regular intervals
@@ -23,15 +26,15 @@ var sendData = setInterval(function () {
   const allPins = [
     {
       id: "A0",
-      value: getRandomNumber(),
+      value: getRandomNumberAnalog(),
     },
     {
       id: "A1",
-      value: getRandomNumber(),
+      value: getRandomNumberAnalog(),
     },
     {
       id: "D2",
-      value: getRandomNumber(),
+      value: getRandomNumberDigital(),
     },
   ];
 

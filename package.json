@@ -1,8 +1,8 @@
 {
-  "name": "arduino-nodejs-api",
+  "name": "arduino-serial-fetch",
   "version": "1.0.0",
   "description": "simple nodejs api for arduino",
-  "main": "index.js",
+  "main": "main.js",
   "dependencies": {
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.1",
@@ -10,8 +10,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js",
-    "test": "test"
+    "start": "node main.js",
+    "test": "node test.js"
   },
   "author": "Stephanie Cheng Smith",
   "license": "ISC"

@@ -5,9 +5,9 @@ const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
 
 // vars *️⃣ update to match your configuration
-const portName = "/dev/cu.SLAB_USBtoUART"; // the name of the serial port (same as arduino port)
-const baudRate = 9600; // should match the arduino's baudrate
-const interval = 500; // time interval for POST requests
+const portName = process.env.SERIALPORT || "/dev/cu.SLAB_USBtoUART"; // the name of the serial port (same as arduino port)
+const baudRate = process.env.BAUDRATE || 9600; // should match the arduino's baudrate
+const interval = process.env.INTERVAL || 500; // time interval for POST requests
 
 // an empty array to store pin data
 let pins = [];

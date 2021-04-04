@@ -1,6 +1,6 @@
 /* Basis for arduino code
 ** Each pin should be read and printed on the same line
-** index.js pins array usage should correspond with the order you are sending your pins here
+** main.js construction of allPins from pins[] should correspond with the order of the pins in this arduino code
 */
 
 int knobPin = A0;
@@ -24,19 +24,19 @@ void loop() {
   // read each pint and print everything on a single line separated by \t and ending with \n
 
   // A0
-  // will be pins[0]
+  // will be pins[0] in main.js
   knobValue = analogRead(knobPin);
   Serial.print(knobValue);
   Serial.print("\t");
 
   // A1
-  // will be pins[1]
+  // will be pins[1] in main.js
   sensorValue = analogRead(sensorPin);
   Serial.print(sensorValue);
   Serial.print("\t");
 
   // D2
-  // will be pins[2]
+  // will be pins[2] in main.js
   buttonValue = digitalRead(buttonPin);
   Serial.print(buttonValue);
   Serial.print("\t");

@@ -1,14 +1,24 @@
-// manually update pins to test endpoint
+/* Test script
+ ** - Does not required a tethered Arduino
+ ** - Generates a random number for each endpoint for each request
+ ** - Only tests three endpoints: A0, A1, D2
+ */
+
+// import dependencies
 require("dotenv").config();
 const fetch = require("node-fetch");
 
-const interval = process.env.INTERVAL || 500; // time interval for POST requests
+// get interval
+const interval = +process.env.INTERVAL; // time interval for API requests
 
+// random number generator
 function getRandomNumber() {
   const min = Math.ceil(0);
   const max = Math.floor(255);
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+// convert data to API requests at regular intervals
 var sendData = setInterval(function () {
   const allPins = [
     {

@@ -1,35 +1,37 @@
 # arduino-serial-fetch
 
-## Simple NodeJS app that converts serial messages to REST API requests
+This app converts serial messages from an Arduino to REST API requests. It has been developed to correspond specifically with the REST API service provided by [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) and is structured solely to update pin data.
 
-This api will allow your arduino to send and receive data to a remote server. This means you can retrieve data from other arduinos and alternatively make your data available to others. Additionally, the endpoints for your arduino can be used as a data endpoint in other apps, i.e. p5.js, Max/MSP, etc.
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format)
+- [Adding more pins](#adding-more-pins)
+- [Test API endpoints](#test-api-endpoints)
 
-This is achievable by using two repos:
-
-1. [arduino-serial-fetch](https://github.com/stephiescastle/arduino-serial-fetch) - (aka this repo) - The node.js app that reads from and writes to your arduino board. The node.js app runs locally alongside your arduino board.
-2. [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) - The server that provides the data endpoints and is deployed to heroku.
-
-This was developed to help facilitate the creation of interactive, physical computing-based works while we all live in quarantine.
-
-## Dependencies
+## Requirements
 
 - [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)
-- node.js
-- arduino program must be printing data to the serial port with a delimiter (see [/arduinoSerial/arduinoSerial.ino](/arduinoSerial/arduinoSerial.ino))
-- arduino must be tethered via USB
+- Arduino serial messages must following a specific format. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format)
+- Arduino must be tethered to your computer
 
-### Getting Started
+## Getting Started
 
-1. Set up your [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)
-2. Create your env file.
+1. First complete your [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) setup
+2. Connect your Arduino to your computer and upload the corresponding Arduino program to it. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format).
+3. Create your env file.
 
    ```bash
    cp .env.dist .env
    ```
 
-3. Update the `.env` file with your `API_HOST`. This corresponds to the URL of your API server.
+4. Update the `.env` file with values that match your configuration:
 
-4. Connect your arduino to your computer and upload the corresponding arduino program to it (you may need to modify this for the pins you are actually using)
+   | var          | default                   | description                                                                                                      |
+   | :----------- | :------------------------ | :--------------------------------------------------------------------------------------------------------------- |
+   | `API_HOST`   | `http://localhost:3000`   | The host URL of your API server (see [arduino-api-server](https://github.com/stephiescastle/arduino-api-server)) |
+   | `SERIALPORT` | `/dev/tty.SLAB_USBtoUART` | The serial port your Arduino is connected to. Should match the port name you use in the Arduino IDE.             |
+   | `BAUDRATE`   | `9600`                    | Match the baudrate used in your Arduino code. Check `Serial.begin(9600);` in your Arduino `setup()`              |
+   | `INTERVAL`   | `500`                     | Frequency of API requests (in milliseconds)                                                                      |
 
 5. Install dependencies
 
@@ -37,16 +39,119 @@ This was developed to help facilitate the creation of interactive, physical comp
    npm install
    ```
 
-6. Run arduino-serial-fetch
+6. Run the app
 
    ```bash
    npm start
    ```
 
-### Test changing a value
+   To stop the app, use ctrl-c (`^C`)
 
-If you don't have your arduino connected, you can manually update pin values via the `test.js` script. This is useful if you just want to test your endpoints.
+## Arduino code and `Serial.print()` format
+
+This app assumes that your Arduino code is only printing one line to the Serial port per `loop()` iteration and is constructed like so:
+
+```js
+// for three pins
+<number>\t<number>\t<number>\t\n
+```
+
+Each number represents pin data, with `\t` as the delimiter. `\n` signifies the end of the data reading for one iteration in `loop()`. It is up to the interpreter to know the order of the pins and how that should correspond to their usage (see [Adding more pins](#adding-more-pins)).
+
+You can use [/arduinoSerial/arduinoSerial.ino](/arduinoSerial/arduinoSerial.ino) as boilerplate for your Arduino code with pins modified as needed.
+
+## Adding more pins
+
+The app defaults to reading and sending the following pins:
+
+- `A0`
+- `A1`
+- `D2`
+
+This can be modified by updating both the:
+
+1. Arduino code: read the necessary pins and append to the `Serial.print` message
+2. `main.js`: modify the constructed `allPins` array that is used to generate API requests.
+
+For example, say I needed to read pins `A0`, `A3`, `D4`, and `D7`. I would need to modify my code like so:
+
+```c++
+// arduinoSerial.ino
+
+int knobPin = A0;
+int knobValue = 0;
+
+int sensorPin = A3;
+int sensorValue = 0;
+
+int button1Pin = D4;
+int button1Value = 0;
+
+int button2Pin = D7;
+int button2Value = 0;
+
+void setup() {
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // A0 will be pins[0]
+  knobValue = analogRead(knobPin);
+  Serial.print(knobValue);
+  Serial.print("\t");
+
+  // A3 will be pins[1]
+  sensorValue = analogRead(sensorPin);
+  Serial.print(sensorValue);
+  Serial.print("\t");
+
+  // D4 will be pins[2]
+  buttonValue = digitalRead(button1Pin);
+  Serial.print(button1Value);
+  Serial.print("\t");
+
+  // D7 will be pins[3]
+  buttonValue = digitalRead(button2Pin);
+  Serial.print(button2Value);
+  Serial.print("\t");
+
+  Serial.println();
+
+}
+```
+
+```js
+// main.js excerpt
+const allPins = [
+  {
+    id: "A0",
+    value: pins[0],
+  },
+  {
+    id: "A3",
+    value: pins[1],
+  },
+  {
+    id: "D4",
+    value: pins[2],
+  },
+  {
+    id: "D7",
+    value: pins[3],
+  },
+];
+```
+
+> Note how the `pins[]` array index does not necessarily correspond to the Arduino pin number.
+
+## Test API endpoints
+
+If you don't have an Arduino connected, you can mimic one with the `test.js` script. This is useful if you just want to test your endpoints. The test script will also send API requests at the same `INTERVAL` defined in your `.env` file.
 
 ```bash
 npm test
 ```
+
+To stop the test, use ctrl-c (`^C`)

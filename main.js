@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
 
-// vars *️⃣ update to match your configuration
-const portName = process.env.SERIALPORT || "/dev/cu.SLAB_USBtoUART"; // the name of the serial port (same as arduino port)
-const baudRate = process.env.BAUDRATE || 9600; // should match the arduino's baudrate
-const interval = process.env.INTERVAL || 500; // time interval for POST requests
+// vars populated by .env file
+const portName = process.env.SERIALPORT; // the name of the serial port (same as arduino port)
+const baudRate = +process.env.BAUDRATE; // should match the arduino's baudrate
+const interval = +process.env.INTERVAL; // time interval for API requests
 
 // an empty array to store pin data
 let pins = [];
@@ -39,7 +39,7 @@ port.on("open", () => {
     pins = data.split("\t").map(Number);
   });
 
-  // send our data to the net
+  // convert data to API requests at regular intervals
   sendData = setInterval(function () {
     // create a new array based on parsed data
     // *️⃣ add more pins to this array as needed. this should correspond with your arduino code

@@ -17,14 +17,15 @@ This app converts serial messages from an Arduino to REST API requests. It has b
 ## Getting Started
 
 1. First complete your [arduino-api-server](https://github.com/stephiescastle/arduino-api-server) setup
-2. Connect your Arduino to your computer and upload the corresponding Arduino program to it. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format).
-3. Create your env file.
+2. Download/clone this repo or [use it as a template](https://github.com/stephiescastle/arduino-serial-fetch/generate)
+3. Connect your Arduino to your computer and upload the corresponding Arduino program to it. See [Arduino code and `Serial.print()` format](#arduino-code-and-serialprint-format).
+4. Create your env file.
 
    ```bash
    cp .env.dist .env
    ```
 
-4. Update the `.env` file with values that match your configuration:
+5. Update the `.env` file with values that match your configuration:
 
    | var          | default                   | description                                                                                                      |
    | :----------- | :------------------------ | :--------------------------------------------------------------------------------------------------------------- |
@@ -33,13 +34,13 @@ This app converts serial messages from an Arduino to REST API requests. It has b
    | `BAUDRATE`   | `9600`                    | Match the baudrate used in your Arduino code. Check `Serial.begin(9600);` in your Arduino `setup()`              |
    | `INTERVAL`   | `500`                     | Frequency of API requests (in milliseconds)                                                                      |
 
-5. Install dependencies
+6. Install dependencies
 
    ```bash
    npm install
    ```
 
-6. Run the app
+7. Run the app
 
    ```bash
    npm start
